@@ -1,0 +1,14 @@
+select employee_id, last_name, salary
+from hr.employees
+where employee_id = 200
+for update;
+
+select employee_id, last_name, salary
+from hr.employees
+where employee_id = 200
+for update;
+
+update hr.employees
+set salary = salary * 1.1
+where employee_id = 200;
+commit;

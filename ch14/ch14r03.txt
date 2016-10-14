@@ -1,0 +1,25 @@
+select
+shredded_warehouses."Building",
+shredded_warehouses."FloorArea",
+shredded_warehouses."#Docks",
+shredded_warehouses."DockType",
+shredded_warehouses."WaterAccess",
+shredded_warehouses."RailAccess",
+shredded_warehouses."Parking",
+shredded_warehouses."VertClearance"
+from oe.warehouses,
+xmltable
+('/Warehouse'
+passing warehouses.warehouse_spec
+CHAPTER 14 ¦ WORKING WITH XML DATA
+8
+columns
+"Building" varchar2(8) path '/Warehouse/Building',
+"FloorArea" number path '/Warehouse/Area',
+"#Docks" number path '/Warehouse/Docks',
+"DockType" varchar2(10) path '/Warehouse/DockType',
+"WaterAccess" varchar2(8) path '/Warehouse/WaterAccess',
+"RailAccess" varchar2(7) path '/Warehouse/RailAccess',
+"Parking" varchar2(7) path '/Warehouse/Parking',
+"VertClearance" varchar(9) path '/Warehouse/VClearance'
+) shredded_warehouses;

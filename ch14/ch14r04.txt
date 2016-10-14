@@ -1,0 +1,3 @@
+select
+extract(warehouse_spec, 'Warehouse/VClearance') as VClearance_XML
+from oe.warehouses;

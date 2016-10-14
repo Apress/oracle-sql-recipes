@@ -1,0 +1,6 @@
+select to_char(sysdate,'Day') Day_Of_Week,
+case
+when to_char(sysdate,'D') in (1,7) then 'Weekend'
+else 'Weekday'
+end Day_Type
+from dual;

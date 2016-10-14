@@ -1,0 +1,23 @@
+select order_id, line_item_id, product_id,
+   unit_price, quantity, unit_price*quantity line_total_price
+from order_items;
+
+select order_id, line_item_id, product_id,
+   unit_price, quantity, 
+   to_char(unit_price*quantity,'$9,999,999.99') line_total_price
+from order_items;
+
+create view order_items_subtotal_vw as
+select order_id, line_item_id, product_id,
+   unit_price, quantity, 
+   to_char(unit_price*quantity,'$9,999,999.99') line_total_price
+from order_items
+;
+
+select order_id, line_item_id, product_id,
+   unit_price, quantity, line_total_price
+from order_items_subtotal_vw;
+
+alter table order_items
+   add (line_total_price as (to_char(unit_price*quantity,'$9,999,999.99')));
+

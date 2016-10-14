@@ -1,0 +1,10 @@
+create sequence hr.employee_num;
+
+select hr.employee_num.nextval
+
+insert into hr.new_employee
+(employee_pk, last_name, first_name)
+values
+(hr.employee_num.nextval, 'Green', 'Sally');
+
+select hr.employee_num.currval from dual;

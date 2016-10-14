@@ -1,0 +1,21 @@
+with all_used_emp_ids as
+   (select level poss_emp_id from (select max(employee_id) max_emp_num
+                                   from employees)
+    connect by level <= max_emp_num)
+select poss_emp_id
+from all_used_emp_ids
+where poss_emp_id not in (select employee_id from employees)
+order by poss_emp_id
+;
+
+with all_used_emp_ids as
+   (select level poss_emp_id from (select max(employee_id) max_emp_num
+                                   from employees)
+    connect by level <= max_emp_num)
+select poss_emp_id
+from all_used_emp_ids
+where poss_emp_id not in (select employee_id from employees)
+  and poss_emp_id > 99
+order by poss_emp_id
+;
+

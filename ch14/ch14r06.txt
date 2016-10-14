@@ -1,0 +1,51 @@
+begin
+dbms_xmlschema.registerschema(
+schemaurl=>'http://localhost/transfer/warehouse_schema.xsd',
+schemadoc=>
+'<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+targetNamespace="http://tempuri.org/XMLSchema.xsd"
+elementFormDefault="qualified"
+xmlns="http://tempuri.org/XMLSchema.xsd"
+xmlns:mstns="http://tempuri.org/XMLSchema.xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:xdb="http://xmlns.oracle.com/xdb">
+<xs:element name="warehouse_spec">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Building" type="xs:string" minOccurs="1"
+xdb:SQLName="BUILDING" />
+<xs:element name="Area" type="xs:unsignedInt" minOccurs="1"
+xdb:SQLName="AREA" />
+<xs:element name="Docks" type="xs:unsignedInt" minOccurs="1"
+xdb:SQLName="DOCKS" />
+<xs:element name="DockType" type="xs:string" minOccurs="1"
+xdb:SQLName="DOCKTYPE" />
+<xs:element name="WaterAccess" type="xs:boolean" minOccurs="1"
+xdb:SQLName="WATERACCESS" />
+<xs:element name="RailAccess" type="xs:boolean" minOccurs="0"
+xdb:SQLName="RAILACCESS" />
+<xs:element name="Parking" type="xs:string" minOccurs="0"
+xdb:SQLName="PARKING" />
+<xs:element name="VClearance" type="xs:string" minOccurs="0"
+xdb:SQLName="VCLEARANCE" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema>');
+end;
+/
+
+select w.warehouse_id,
+case
+when
+w.warehouse_spec.isSchemaValid
+('http://localhost/transfer/warehouse_schema.xsd',
+'warehouse_spec') = 1 then 'Valid'
+when
+w.warehouse_spec.isSchemaValid
+('http://localhost/transfer/warehouse_schema.xsd',
+'warehouse_spec') is null then 'Undefined'
+else 'Invalid'
+end XML_Validity
+from oe.warehouses w;

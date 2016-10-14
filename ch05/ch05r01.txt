@@ -1,0 +1,18 @@
+select employee_id, last_name,
+nvl(to_char(commission_pct), 'No Commission') as COMMISSION
+from hr.employees;
+
+select employee_id, last_name,
+nvl2(commission_pct, 'Commission Based', 'No Commission') as COMMISSION
+from hr.employees;
+
+select employee_id, last_name,
+coalesce((1 + commission_pct) * salary, salary) as SAL_INC_COMM
+from hr.employees;
+
+select employee_id, last_name,
+case
+when commission_pct is null then salary
+else (1 + commission_pct) * salary
+end total_pay
+from hr.employees;

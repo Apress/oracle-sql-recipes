@@ -1,0 +1,11 @@
+select level new_pk from dual connect by level <= 1000;
+
+select level new_pk from dual connect by 1=1;
+
+select level new_pk,
+   case
+      when mod(level,2) = 1 then 'ODD'
+      else 'EVEN'
+   end odd_or_even
+from dual connect by level <= 1000;
+

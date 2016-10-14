@@ -1,0 +1,6 @@
+select nvl(to_char(department_id),'-') as "DEPT.", count(*) as "EMP_COUNT"
+from hr.employees
+group by department_id
+union
+select 'All Depts.', count(*)
+from hr.employees;

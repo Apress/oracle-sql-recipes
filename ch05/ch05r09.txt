@@ -1,0 +1,28 @@
+Select
+'select ''' || owner || ''',
+''' || table_name || ''',
+''' || column_name || ''',
+' || column_name ||
+' from ' ||
+owner ||
+'.' ||
+table_name ||
+' where ' ||
+column_name || '
+like ''%Greene%'';' as Child_Select_Statements
+from all_tab_columns
+where owner in ('BI', 'HR', 'IX', 'OE', 'PM', 'SH')
+and data_type in ('VARCHAR2','CHAR','NVARCHAR2','NCHAR')
+and data_length >= length('Greene');
+
+select 'HR','EMPLOYEES','FIRST_NAME', FIRST_NAME
+from HR.EMPLOYEES
+where FIRST_NAME like '%Greene%';
+
+select 'HR','EMPLOYEES','LAST_NAME', LAST_NAME
+from HR.EMPLOYEES
+where LAST_NAME like '%Greene%';
+
+select 'HR','EMPLOYEES','EMAIL', EMAIL
+from HR.EMPLOYEES
+where EMAIL like '%Greene%';

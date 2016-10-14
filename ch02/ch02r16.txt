@@ -1,0 +1,10 @@
+with salesdays as
+(select extract(day from order_date) next_sale,
+lag(extract(day from order_date),1,0)
+over (order by extract(day from order_date)) prev_sale
+from oe.orders
+where order_date between '01-NOV-1999' and '30-NOV-1999')
+select prev_sale, next_sale
+from salesdays
+where next_sale - prev_sale > 1
+order by prev_sale;

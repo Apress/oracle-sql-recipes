@@ -1,0 +1,3 @@
+select customer_id, order_total,
+ntile(4) over (order by order_total desc) as order_quartile
+from oe.orders;

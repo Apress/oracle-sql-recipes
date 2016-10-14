@@ -1,0 +1,3 @@
+select employee_id, last_name, salary
+from hr.employees
+where salary > &threshold_salary

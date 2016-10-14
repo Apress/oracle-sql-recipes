@@ -1,0 +1,29 @@
+update locations
+set street_address = 
+   regexp_replace(street_address,'\s(road|rd|roade)$',' RD',1,0,'i')
+where regexp_instr(street_address,'\s(road|rd|roade)$',1,1,0,'i') > 0
+;
+
+select location_id, street_address
+from locations
+where instr(street_address,'RD') > 0
+;
+
+update locations
+set street_address = 
+   regexp_replace(street_address,'\s(road|rd|roade)$',' RD',1,0,'i')
+;
+
+update locations
+set street_address = 
+   regexp_replace(street_address,'\s(road|rd|roade)',' RD',1,2,'i')
+where regexp_instr(street_address,'\s(road|rd|roade)',1,2,1,'i') > 0
+;
+
+update locations
+set street_address = 
+   regexp_replace(street_address,'\s(south|so)\s',' S',1,
+     regexp_count(street_address,'\s(south|so)\s',1,'i'),'i')
+where regexp_count(street_address,'\s(south|so)\s',1,'i') > 0
+;
+

@@ -1,0 +1,36 @@
+create table hr.empa
+as
+select *
+from hr.employees
+where employee_id < 175;
+create table hr.empb
+as
+select *
+from hr.employees
+where employee_id > 125;
+
+select min(employee_id), max(employee_id), count(*)
+from hr.empa;
+
+select min(employee_id), max(employee_id), count(*)
+from hr.empb;
+
+insert into hr.empa
+select *
+from hr.empb
+minus
+select *
+from hr.empa;
+
+insert into hr.empb
+select *
+from hr.empa
+minus
+select *
+from hr.empb;
+
+select min(employee_id), max(employee_id), count(*)
+from hr.empa;
+
+select min(employee_id), max(employee_id), count(*)
+from hr.empb;

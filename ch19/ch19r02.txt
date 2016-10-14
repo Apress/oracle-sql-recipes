@@ -1,0 +1,25 @@
+COL SID FORMAT 99999
+COL status FORMAT A15
+COL start_time FORMAT A12
+COL plan_line_id FORMAT 99999 HEAD "Plan ID"
+COL plan_options FORMAT A16
+COL mem_bytes FORMAT 99999999
+COL temp_bytes FORMAT 99999999
+SET LINESIZE 132 PAGESI 100 TRIMSP ON
+BREAK ON sid on status on start_time NODUP SKIP 1
+--
+select
+a.sid
+,a.status
+,to_char(a.sql_exec_start,'yymmdd hh24:mi') start_time
+,a.plan_line_id
+,a.plan_operation
+,a.plan_options
+,a.output_rows
+,a.workarea_mem mem_bytes
+,a.workarea_tempseg temp_bytes
+from v$sql_plan_monitor a
+,v$sql_monitor b
+where a.status NOT LIKE '%DONE%'
+and a.key = b.key
+order by a.sid, a.sql_exec_start, a.plan_line_id;

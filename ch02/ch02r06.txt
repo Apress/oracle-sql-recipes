@@ -1,0 +1,8 @@
+select * from (
+select department_id as "dept", job_id as "job", to_char(hire_date,'YYYY') as
+"Start_Year", avg(salary) as "avsal"
+from hr.employees
+group by rollup (department_id, job_id, to_char(hire_date,'YYYY'))) salcalc
+where salcalc.start_year > '1990'
+or salcalc.start_year is null
+order by 1,2,3,4;

@@ -1,0 +1,13 @@
+update oe.warehouses
+set warehouse_spec =
+updatexml(
+warehouse_spec,
+'/Warehouse/Area/text()',
+extractvalue(
+warehouse_spec,
+'Warehouse/Area')*0.09290304
+);
+
+select
+extractvalue(warehouse_spec, 'Warehouse/Area')
+from oe.warehouses;

@@ -1,0 +1,17 @@
+select
+  username
+ ,account_status
+ ,created
+ ,lock_date
+from dba_users
+order by 1;
+--
+select
+ sys_context('USERENV','CURRENT_USER') usr
+,sys_context('USERENV','AUTHENTICATION_METHOD') auth_mth
+,sys_context('USERENV','HOST') host
+,sys_context('USERENV','INSTANCE_NAME') inst
+from dual;
+
+
+

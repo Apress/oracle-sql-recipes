@@ -1,0 +1,3 @@
+select candidate_id, first_name, last_name, email, phone_number, sysdate, job_id, 3500,
+NULL, 'IT_PROG', 103
+from hr.candidates;

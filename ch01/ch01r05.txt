@@ -1,0 +1,8 @@
+insert into hr.employees
+(employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary,
+commission_pct, manager_id, department_id)
+select 210, first_name, last_name, email, phone_number, sysdate, 'IT_PROG', 3500,
+NULL, 103, 60
+from hr.candidates
+where first_name = 'Susan'
+and last_name = 'Jones';

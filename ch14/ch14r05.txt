@@ -1,0 +1,13 @@
+select XMLRoot(
+XMLElement("Employee",
+XMLAttributes(employee_id as "Employee_ID"),
+XMLElement("FirstName", first_name),
+XMLElement("LastName", last_name),
+XMLElement("Salary",
+XMLAttributes('Monthly' as "Period"),
+XMLElement("Amount", salary),
+XMLElement("Currency", 'USD'))
+),
+VERSION '1.0') Employee_XML
+from hr.employees
+where employee_id = 205;

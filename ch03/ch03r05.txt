@@ -1,0 +1,22 @@
+delete from employees_retired
+where employee_id 
+   in (select employee_id from employees)
+;
+
+delete (
+        select employee_id
+        from employees_retired join employees using(employee_id)
+       );
+
+delete (
+        select employee_id
+        from employees join employees_retired using(employee_id)
+       );
+
+delete from employees_retired er
+where exists (
+              select 1 from employees e
+              where er.employee_id = e.employee_id
+             )
+;
+

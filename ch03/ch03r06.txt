@@ -1,0 +1,10 @@
+select * from employees_act
+intersect
+select * from employees_new
+;
+
+select 'X' C1, NULL C2 from DUAL
+intersect
+select 'X' C1, NULL C2 from DUAL
+;
+

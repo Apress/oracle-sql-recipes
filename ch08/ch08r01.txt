@@ -1,0 +1,3 @@
+update hr.employees
+set salary = salary + to_number('100.00');
+commit;

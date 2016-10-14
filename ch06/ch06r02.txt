@@ -1,0 +1,2 @@
+select to_date('January 17, 2009', 'Month DD, YYYY') formatted_date
+from dual;

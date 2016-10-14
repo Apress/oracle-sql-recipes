@@ -1,0 +1,10 @@
+select p2.promo_name || ' started before ' || p1.promo_name || ' ended.'
+as "Promotion Overlap"
+from sh.promotions p1 inner join sh.promotions p2 on
+(p1.promo_category = p2.promo_category and
+p1.promo_subcategory = p2.promo_subcategory and
+p1.promo_id != p2.promo_id)
+where p1.promo_category = 'newspaper'
+and p1.promo_subcategory = 'ad news'
+and p2.promo_begin_date >= p1.promo_begin_date
+and p2.promo_begin_date <= p1.promo_end_date;

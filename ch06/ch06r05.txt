@@ -1,0 +1,10 @@
+select Day_Source.Day_Row Promotion_Date,
+count(sh.promotions.promo_begin_date) Promotions_Launched
+from
+(select to_date('01-JUN-98') + rownum - 1 as Day_Row
+from dual
+connect by level <= 30)
+Day_Source left outer join sh.promotions
+on Day_Source.Day_Row = sh.promotions.promo_begin_date
+group by Day_Source.Day_Row
+order by Day_Source.Day_Row;

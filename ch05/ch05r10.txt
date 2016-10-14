@@ -1,0 +1,15 @@
+select
+s.channel_desc,
+regr_intercept(s.total_sold, p.prod_list_price) total_sold_intercept,
+regr_slope (s.total_sold, p.prod_list_price) trend_slope,
+regr_r2(s.total_sold, p.prod_list_price) r_squared_confidence
+from sh.products p,
+(select c.channel_desc, s.prod_id, s.time_id, sum(s.quantity_sold) total_sold
+from sh.sales s inner join sh.channels c
+on s.channel_id = c.channel_id
+group by c.channel_desc, s.prod_id, s.time_id) s
+where s.prod_id=p.prod_id
+and p.prod_category='Electronics'
+and s.time_id between to_date('01-JAN-1998') and to_date('31-DEC-1999')
+group by s.channel_desc
+order by 1;

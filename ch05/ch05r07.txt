@@ -1,0 +1,5 @@
+select product_id, product_name
+from oe.product_information
+where list_price > ALL
+(select unit_price
+from oe.order_items);

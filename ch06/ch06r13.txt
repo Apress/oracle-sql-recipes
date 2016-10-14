@@ -1,0 +1,36 @@
+create or replace function easter_sunday(given_year number) return date
+as
+golden_metonic number;
+century number;
+leap_year_fix number;
+lunar_sync number;
+sunday_date number;
+epact number;
+CHAPTER 6 ¦ WORKING WITH DATE AND TIME VALUES
+21
+day_of_month number;
+easter_offset number;
+begin
+golden_metonic := mod(given_year,19) + 1;
+century := (given_year / 100) + 1;
+leap_year_fix := (3 * century / 4) - 12;
+lunar_sync := ((8 * century + 5)/25) - 5;
+sunday_date := (5 * given_year / 4) - leap_year_fix - 3;
+epact := mod((11 * golden_metonic + 20 + lunar_sync - leap_year_fix),30);
+if((epact = 25 and golden_metonic < 11) or (epact = 24)) then
+epact := epact + 1;
+end if;
+day_of_month := 44 - epact;
+if(day_of_month < 21) then
+day_of_month := day_of_month + 30;
+end if;
+easter_offset := (day_of_month + 7 - mod((sunday_date + day_of_month),7)) - 1;
+return to_date('01-MAR-' || to_char(given_year),'DD-MON-YYYY') + easter_offset;
+end;
+/
+
+select easter_sunday(2000)
+from dual;
+
+select easter_sunday(extract(year from (sysdate)))
+from dual;

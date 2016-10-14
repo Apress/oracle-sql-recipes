@@ -1,0 +1,27 @@
+select employee_id, last_name, first_name
+from employees
+where instr(last_name,'ll',4) > 0
+;
+
+select employee_id, last_name, first_name
+from employees
+where last_name like '___%ll%'  -- three underscores
+;
+
+select employee_id, last_name, first_name
+from employees
+where last_name like '___%ll'  -- three underscores
+;
+
+select * from products where product_name like '%\_%' escape '\';
+
+select employee_id, last_name, first_name
+from employees
+where last_name not like '___%ll%'  -- three underscores
+;
+
+select employee_id, last_name, first_name
+from employees
+where instr(last_name,'&srch_str',&start_pos,&occ_num) > 0
+;
+

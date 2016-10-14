@@ -1,0 +1,3 @@
+select to_binary_double(salary*commission_pct)
+from hr.employees
+where job_id = 'SA_REP';

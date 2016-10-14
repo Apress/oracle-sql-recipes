@@ -1,0 +1,61 @@
+with order_item_query as
+   (select customer_id, product_id, quantity, unit_price
+    from orders join order_items using(order_id))
+select * from order_item_query
+pivot (
+       sum(quantity) as sum_qty,
+       sum(quantity*unit_price) as sum_prc
+          for (product_id) in (3170 as P3170,
+                               3176 as P3176,
+                               3182 as P3182,
+                               3163 as P3163,
+                               3165 as P3165)
+      )
+order by customer_id
+;
+
+with order_item_query as
+   (select customer_id, product_id, quantity, unit_price, order_mode
+    from orders join order_items using(order_id))
+select * from order_item_query
+pivot (
+       sum(quantity) as sum_qty,
+       sum(quantity*unit_price) as sum_prc
+          for (product_id, order_mode) in ((3170,'direct') as P3170_DIR,
+                                           (3170,'online') as P3170_ONL,
+                                           (3176,'direct') as P3176_DIR,
+                                           (3176,'online') as P3176_ONL,
+                                           (3182,'direct') as P3182_DIR,
+                                           (3182,'online') as P3182_ONL,
+                                           (3163,'direct') as P3163_DIR,
+                                           (3163,'online') as P3163_ONL,
+                                           (3165,'direct') as P3165_DIR,
+                                           (3165,'online') as P3165_ONL)
+      )
+order by customer_id
+;
+
+with order_item_query as
+   (select customer_id, product_id, quantity
+    from orders join order_items using(order_id))
+select * from order_item_query
+pivot xml (
+           sum(quantity) as sum_qty
+              for (product_id) in (any)
+          )
+order by customer_id
+;
+
+with order_item_query as
+   (select customer_id, product_id, quantity
+    from orders join order_items using(order_id))
+select * from order_item_query
+pivot xml (
+           sum(quantity) as sum_qty
+              for (product_id) in (select distinct product_id
+                                   from product_information
+                                   where product_status = 'orderable')
+          )
+order by customer_id
+;
+

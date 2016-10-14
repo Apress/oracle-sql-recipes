@@ -1,0 +1,3 @@
+select rownum as my_numbers
+from dual
+connect by level <= 1000;

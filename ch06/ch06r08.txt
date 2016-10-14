@@ -1,0 +1,11 @@
+select last_day(sysdate)
+from dual;
+
+select '1900' Year,last_day('01-FEB-1900') End_Of_Feb
+from dual
+union
+select '2000' Year,last_day('01-FEB-2000') End_Of_Feb
+from dual
+union
+select '2010' Year,last_day('01-FEB-2010') End_Of_Feb
+from dual;

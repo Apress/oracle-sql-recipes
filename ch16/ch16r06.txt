@@ -1,0 +1,8 @@
+update web_img
+set img_blb = empty_blob()
+where img_num = 19
+;
+
+
+dbms_lob.copy (existing_blb, new_blb, 5000, 125, 10);
+

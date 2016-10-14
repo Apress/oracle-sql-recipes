@@ -1,0 +1,9 @@
+select
+from_tz
+(cast
+(to_date
+('2009-08-14 11:25:00','YYYY-MM-DD HH:MI:SS')
+as timestamp)
+, 'Australia/Sydney')
+at time zone 'America/Los_Angeles' "Date and Time in LA"
+from dual;

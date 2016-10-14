@@ -1,0 +1,7 @@
+create table apps
+(app_id number
+,app_amnt number)
+partition by system
+(partition p1
+,partition p2
+,partition p3);

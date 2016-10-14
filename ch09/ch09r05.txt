@@ -1,0 +1,72 @@
+alter table employees drop constraint emp_job_fk;
+
+alter table employees
+   add constraint emp_job_fk
+   foreign key (job_id)
+   references hr.jobs(job_id)
+   initially deferred deferrable
+   enable
+;
+
+insert into employees
+   (employee_id, first_name, last_name, email, hire_date, job_id)
+values 
+   (301, 'Ellen', 'Kruser', 'EKRU', '31-may-1966', 'IT_WEB')
+;
+
+insert into employees
+   (employee_id, first_name, last_name, email, hire_date, job_id)
+values 
+   (301, 'Ellen', 'Kruser', 'EKRU', '31-may-1966', 'IT_WEB')
+;
+
+commit;
+
+insert into employees
+   (employee_id, first_name, last_name, email, hire_date, job_id)
+values 
+   (301, 'Ellen', 'Kruser', 'EKRU', '31-may-1966', 'IT_WEB')
+;
+
+insert into jobs
+   (job_id, job_title)
+values
+   ('IT_WEB', 'Web Developer')
+;
+
+commit;
+
+set constraint emp_job_fk immediate;
+
+set constraint emp_job_fk deferred;
+
+select uc.table_name child_table_name,
+       acc1.column_name child_column_name,
+       uc.constraint_name child_constraint_name,
+       acc2.table_name parent_table_name, 
+       uc.r_constraint_name parent_constraint_name       
+from user_constraints uc
+   join all_cons_columns acc1
+      on uc.table_name = acc1.table_name 
+         and uc.constraint_name = acc1.constraint_name
+   join all_cons_columns acc2
+      on uc.r_constraint_name = acc2.constraint_name
+where uc.table_name = 'EMPLOYEES'
+  and acc1.column_name = 'JOB_ID'
+  and uc.constraint_type = 'R' -- foreign key
+;
+
+declare
+   v_consdef varchar2(4000);
+begin
+   for rec in (select constraint_name as name
+               from user_constraints
+               where constraint_type = 'R'
+                 and table_name not like 'BIN$%')
+   loop
+     select dbms_metadata.get_ddl('REF_CONSTRAINT', rec.name)
+        into v_consdef from dual;
+     dbms_output.put_line(v_consdef);
+   end loop;
+end;
+

@@ -1,0 +1,20 @@
+select employee_id, last_name, first_name, department_id, department_name
+from employees
+   full outer join departments using(department_id)
+;
+
+select employee_id, last_name, first_name, e.department_id, department_name
+from employees e, departments d
+where e.department_id = d.department_id (+)
+union
+select employee_id, last_name, first_name, e.department_id, department_name
+from employees e, departments d
+where e.department_id (+) = d.department_id
+;
+
+select employee_id, last_name, first_name, department_id, department_name
+from employees
+   full outer join departments using(department_id)
+where employee_id is null or department_name is null
+;
+

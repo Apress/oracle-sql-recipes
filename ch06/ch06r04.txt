@@ -1,0 +1,3 @@
+select employee_id, last_name, salary,
+scn_to_timestamp(ora_rowscn) Change_Timestamp
+from hr.employees;

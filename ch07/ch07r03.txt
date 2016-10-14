@@ -1,0 +1,32 @@
+select location_id, street_address
+from locations
+where location_id in (2100,2900)
+;
+
+update locations
+   set street_address = translate(street_address,'[]_','()-')
+where location_id in (2100,2900)
+;
+
+update locations
+   set street_address = translate(street_address,'X[]','X')
+where location_id in (2100,2900)
+;
+
+update locations
+   set street_address = translate(street_address,'_[]','-')
+where location_id in (2100,2900)
+;
+
+update locations
+   set street_address = translate(street_address,'[]_','()-')
+where instr(street_address,'[') > 0
+   or instr(street_address,']') > 0
+   or instr(street_address,'_') > 0
+;
+
+update locations
+   set street_address = translate(street_address,'[]_','()-')
+where regexp_instr(street_address,'\[|\]|_') > 0
+;
+

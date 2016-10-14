@@ -1,0 +1,13 @@
+select employee_id, last_name, first_name
+from employees
+where regexp_instr(last_name,'^[A-D][[:alpha:] ]*a[^a]+a[[:alpha:] ]*t$') > 0
+order by last_name, first_name
+;
+
+select employee_id, last_name, first_name,
+   regexp_instr(last_name,'[^u]?s',1,2,0,'i') next_char
+from employees
+where regexp_instr(last_name,'[^u]?s',1,2,0,'i') > 0
+order by last_name, first_name
+;
+

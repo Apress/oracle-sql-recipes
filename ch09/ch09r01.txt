@@ -1,0 +1,39 @@
+select employee_id, last_name, first_name, salary
+from employees
+where department_id = 100
+;
+
+select sum(salary)
+from employees
+where department_id = 100
+;
+
+update employees
+set salary = salary + 1000
+where employee_id = 110
+;
+
+update employees
+set salary = salary + 450
+where department_id = 100 and employee_id != 110
+;
+
+select sum(salary)
+from employees
+where department_id = 100
+;
+
+update employees
+set salary = salary + 400
+where department_id = 100 and employee_id != 110
+;
+
+select sum(salary)
+from employees
+where department_id = 100
+;
+
+select employee_id, last_name, first_name, salary
+from employees
+where department_id = 100;
+

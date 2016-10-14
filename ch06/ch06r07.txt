@@ -1,0 +1,17 @@
+select to_number(to_char(sysdate,'YYYY')) Year,
+case
+when mod(to_number(to_char(sysdate,'YYYY')),400) = 0 then 'Leap Year'
+when mod(to_number(to_char(sysdate,'YYYY')),100) = 0 then 'Not Leap Year'
+when mod(to_number(to_char(sysdate,'YYYY')),4) = 0 then 'Leap Year'
+else 'Not Leap Year'
+end as "Leap Year?"
+from dual;
+
+select '2000' Year,
+case
+when mod(2000,400) = 0 then 'Leap Year'
+when mod(2000,100) = 0 then 'Not Leap Year'
+when mod(2000,4) = 0 then 'Leap Year'
+else 'Not Leap Year'
+end as "Leap Year?"
+from dual;

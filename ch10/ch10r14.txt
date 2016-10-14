@@ -1,0 +1,16 @@
+select
+  grantee
+ ,owner
+ ,table_name
+ ,grantor
+ ,privilege
+from user_tab_privs
+union
+select
+  role
+ ,owner
+ ,table_name
+ ,'ROLE'
+ ,privilege
+from role_tab_privs
+order by 2, 3;

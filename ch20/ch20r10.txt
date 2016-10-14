@@ -1,0 +1,11 @@
+begin
+dbms_fga.add_policy (
+object_schema => 'INV',
+object_name => 'EMP',
+audit_column=> 'SALARY',
+policy_name => 'S1_AUDIT',
+statement_types => 'INSERT, UPDATE, DELETE, SELECT',
+audit_trail => DBMS_FGA.DB_EXTENDED
+);
+end;
+/

@@ -1,0 +1,19 @@
+update employees e
+   set salary = (select avg(salary)*1.10
+                 from employees se
+                 where se.department_id = e.department_id)
+;
+
+update employees e
+   set salary = (select avg(salary)*1.10
+                 from employees se
+                 where se.department_id = e.department_id)
+where department_id is not null
+;
+
+update employees e
+   set salary = nvl((select avg(salary)*1.10
+                     from employees se
+                     where se.department_id = e.department_id),salary)
+;
+

@@ -1,0 +1,6 @@
+create table browns(
+ brown_id number
+,bear_name varchar2(30))
+partition by hash(brown_id)
+partitions 3
+store in(tbsp1, tbsp2, tbsp3);

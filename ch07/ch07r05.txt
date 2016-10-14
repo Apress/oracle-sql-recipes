@@ -1,0 +1,14 @@
+select employee_id, last_name, first_name,
+   regexp_substr(last_name,' [a-zA-Z]+n$') second_part
+from employees
+where regexp_substr(last_name,' [a-zA-Z]+n$') is not null
+order by last_name, first_name
+;
+
+select employee_id, last_name, first_name,
+   substr(last_name,instr(last_name,' ')) second_part
+from employees
+where instr(last_name,' ') > 0 and substr(last_name,-1,1)  = 'n'
+order by last_name, first_name
+;
+

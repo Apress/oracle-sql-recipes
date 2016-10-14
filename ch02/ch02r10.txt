@@ -1,0 +1,67 @@
+create or replace type t_list_of_strings as object (
+string_list varchar2(4000),
+static function odciaggregateinitialize
+(agg_context in out t_list_of_strings)
+return number,
+member function odciaggregateiterate
+(self in out t_list_of_strings,
+next_string_to_add in varchar2 )
+return number,
+member function odciaggregatemerge
+(self in out t_list_of_strings,
+para_context in t_list_of_strings)
+return number,
+member function odciaggregateterminate
+(self in t_list_of_strings,
+final_list_to_return out varchar2,
+flags in number)
+return number
+);
+/
+
+create or replace type body t_list_of_strings is
+static function odciaggregateinitialize
+(agg_context in out t_list_of_strings)
+return number is
+begin
+agg_context := t_list_of_strings(null);
+return odciconst.success;
+end;
+member function odciaggregateiterate
+(self in out t_list_of_strings,
+next_string_to_add in varchar2 )
+return number is
+begin
+self.string_list := self.string_list || ' , ' || next_string_to_add;
+return odciconst.success;
+end;
+member function odciaggregatemerge
+(self in out t_list_of_strings,
+para_context in t_list_of_strings)
+return number is
+begin
+self.string_list := self.string_list || ' , ' || para_context.string_list;
+return odciconst.success;
+end;
+member function odciaggregateterminate
+(self in t_list_of_strings,
+final_list_to_return out varchar2,
+flags in number)
+return number is
+begin
+final_list_to_return := ltrim(rtrim(self.string_list, ' , '), ' , ');
+return odciconst.success;
+end;
+end;
+/
+
+create or replace function string_to_list
+(input_string varchar2)
+return varchar2
+parallel_enable
+aggregate using t_list_of_strings;
+/
+
+select manager_id, string_to_list (last_name) as employee_list
+from hr.employees
+group by manager_id;

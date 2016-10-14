@@ -1,0 +1,27 @@
+create tablespace inv_data
+  datafile '/ora02/RMDB11/invdata01.dbf'
+  size 100m
+  extent management local
+  uniform size 256k
+  segment space management auto;
+--
+define tbsp_large=1000M
+define tbsp_med=500M
+--
+create tablespace exp_data
+  datafile '/ora01/oradata/INVREP/exp_data01.dbf'
+  size &&tbsp_large
+  autoextend on maxsize 1000m
+  extent management local
+  uniform size 128k
+  segment space management auto;
+--
+create tablespace reg_data
+  datafile '/ora01/oradata/INVREP/reg_data01.dbf'
+  size &&tbsp_med
+  autoextend on maxsize 1000m
+  extent management local
+  uniform size 128k
+  segment space management auto;
+
+

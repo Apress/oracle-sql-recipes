@@ -1,0 +1,4 @@
+Select department_id, job_id, min(salary), avg(salary), max(salary)
+From hr.employees
+Group by department_id, job_id
+Order by department_id, max(salary) desc;

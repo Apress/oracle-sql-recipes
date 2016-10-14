@@ -1,0 +1,26 @@
+col wait_class format A15
+col event format A35 trunc
+col "CLASS AS % OF WHOLE" format 990.00 HEAD "CLASS AS|% OF WHOLE"
+col "EVENT AS % OF CLASS" like "CLASS AS % OF WHOLE" HEAD "EVENT AS|% OF CLASS"
+col "EVENT AS % OF WHOLE" like "CLASS AS % OF WHOLE" HEAD "EVENT AS|% OF WHOLE"
+set pagesize 30
+break on wait_class on "CLASS AS % OF WHOLE"
+--
+select
+wait_class,
+round(100 * time_class / total_waits, 2) "CLASS AS % OF WHOLE",
+event,
+round(100 * time_waited / time_class, 2) "EVENT AS % OF CLASS",
+round(100 * time_waited / total_waits, 2) "EVENT AS % OF WHOLE"
+from
+(select
+wait_class
+,event
+,time_waited
+,sum(time_waited) over (partition by wait_class) time_class
+,rank() over (partition by wait_class order by time_waited desc) rank_within_class
+,sum(time_waited) over () total_waits
+from v$system_event
+where wait_class <> 'Idle')
+where rank_within_class <= 3
+order by time_class desc, rank_within_class;

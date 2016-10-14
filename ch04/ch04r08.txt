@@ -1,0 +1,35 @@
+update product_information
+set daily_price =
+   round(list_price*(0.9-(dbms_random.value*0.1)))
+;
+
+select product_id, list_price, daily_price
+from product_information
+;
+
+update product_information
+set daily_price =
+   round(list_price*(0.9-(dbms_random.value*0.1)))
+;
+
+select product_id, list_price, daily_price
+from product_information
+;
+
+begin
+   dbms_random.seed(40027);
+end;
+
+begin
+   dbms_random.seed('The Rain in Spain');
+end;
+
+update product_information
+set daily_price =
+   round(list_price*(0.9-(dbms_random.value(0.0,0.1))))
+;
+
+select dbms_random.string('U',20) from dual;
+
+select dbms_random.string('p',25) from dual;
+

@@ -1,0 +1,32 @@
+UNDEFINE owner
+UNDEFINE tab_name
+SET linesize 200
+COL table_name      FORMAT A25
+COL tablespace_name FORMAT A20
+COL partition_name  FORMAT A25
+COL file_name       FORMAT A35
+COL meg_space_used  FORMAT 999,999,999.999
+--
+SELECT
+  a.table_name
+ ,b.tablespace_name
+ ,b.partition_name
+ ,c.file_name
+ ,SUM(b.bytes)/1024/1024 meg_space_used
+FROM dba_tables     a
+    ,dba_extents    b
+    ,dba_data_files c
+WHERE a.owner      = UPPER('&&owner')
+AND   a.table_name = UPPER('&&tab_name')
+AND   a.owner      = b.owner
+AND   a.table_name = b.segment_name
+AND   b.file_id    = c.file_id
+GROUP BY
+  a.table_name
+ ,b.tablespace_name
+ ,b.partition_name
+ ,c.file_name
+ORDER BY a.table_name, b.tablespace_name;
+
+
+

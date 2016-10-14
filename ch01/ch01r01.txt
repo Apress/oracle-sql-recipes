@@ -1,0 +1,4 @@
+select employee_id, first_name, last_name, hire_date, salary
+from hr.employees
+where department_id = 50
+and salary < 7500;

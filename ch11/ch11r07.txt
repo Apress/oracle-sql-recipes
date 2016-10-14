@@ -1,0 +1,12 @@
+select substr(cust_income_level, 1, 22) income_level,
+avg(case when cust_state_province = 'NJ' then amount_sold else null end) NJ_sales,
+avg(case when cust_state_province = 'NY' then amount_sold else null end) NY_sales,
+stats_t_test_indepu(cust_state_province, amount_sold, 'STATISTIC', 'NY')
+T_observed,
+stats_t_test_indepu(cust_state_province, amount_sold)
+two_sided_p_value
+from sh.customers c, sh.sales s
+where c.cust_id = s.cust_id
+and c.cust_state_province in ('NY','NJ')
+group by rollup(cust_income_level)
+order by income_level, NJ_sales, NY_sales, t_observed;

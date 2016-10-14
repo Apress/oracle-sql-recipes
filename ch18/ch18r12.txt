@@ -1,0 +1,15 @@
+CONNECT &&master_user/&&master_pwd.@&&tns_alias
+--
+SET LINESIZE 132 PAGESIZE 0 ECHO OFF FEEDBACK OFF VERIFY OFF HEAD OFF TERM OFF TRIMSPOOL ON
+--
+SPO gen_syns_dyn.sql
+--
+select 'create synonym ' || table_name || ' for ' || '&&master_user..' ||
+  table_name || ';'
+from user_tables;
+--
+SPO OFF;
+--
+SET ECHO ON FEEDBACK ON VERIFY ON HEAD ON TERM ON;
+
+

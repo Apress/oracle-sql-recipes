@@ -1,0 +1,51 @@
+create sequence img_seq;
+
+create table image
+(
+   img_num        number,
+   img_nm         varchar2(100),
+   img_blb        blob,
+   ins_ts         timestamp
+);
+Next, run an anonymous block to load the image SCREEN CAPTURE.BMP into your database table:
+declare
+   src_blb        bfile;        /* point to source BLOB on file system  */
+   dst_blb        blob;         /* destination BLOB in table            */
+   src_img_nm     varchar2(100) := 'Screen Capture.bmp';
+   src_offset     integer := 1; /* where to start in the source BLOB    */
+   dst_offset     integer := 1; /* where to start in the target BLOB    */
+begin
+   src_blb := bfilename('LOB_SRC',src_img_nm);
+   insert into image (img_num, img_nm, img_blb, ins_ts)
+      values(img_seq.nextval, src_img_nm, empty_blob(), systimestamp)
+      returning img_blb into dst_blb;
+   dbms_lob.open(src_blb, dbms_lob.lob_readonly);
+   dbms_lob.loadblobfromfile
+      (
+       dest_lob =>     dst_blb,
+       src_bfile =>    src_blb,
+       amount =>       dbms_lob.lobmaxsize,
+       dest_offset =>  dst_offset,
+       src_offset =>   src_offset
+      );
+   dbms_lob.close(src_blb);
+   commit;
+   dbms_output.put_line('Wrote BLOB to table: ' || src_img_nm);
+end;
+
+select img_num, img_nm, ins_ts, length(img_blb) from image;
+
+create or replace procedure load_blob ( src_img_nm in varchar2 )
+is
+   src_blb        bfile;        /* point to source BLOB on file system  */
+   dst_blb        blob;         /* destination BLOB in table            */
+   src_offset     integer := 1; /* where to start in the source BLOB    */
+   dst_offset     integer := 1; /* where to start in the target BLOB    */
+begin
+. . .  /* same code as in the anonymous block version */
+end;
+
+begin
+   load_blob('Screen Capture.bmp');
+end;
+

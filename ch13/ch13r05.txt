@@ -1,0 +1,23 @@
+select employee_id, manager_id, level lvl,
+   connect_by_iscycle is_cycle,
+   lpad(' ',(level-1)*3) || last_name || ', ' || first_name full_name
+from employees
+start with last_name = 'Kochhar'
+connect by nocycle manager_id = prior employee_id
+;
+
+select employee_id, manager_id, last_name, first_name from employees
+where manager_id in
+(
+   select employee_id
+   from employees
+   where connect_by_iscycle = 1
+   start with last_name = 'Kochhar'
+   connect by nocycle manager_id = prior employee_id
+);
+
+update employees
+set manager_id = 100
+where employee_id = 101
+;
+

@@ -1,0 +1,15 @@
+select employee_id, last_name, first_name, department_id, department_name
+from employees
+   left outer join departments using(department_id)
+;
+
+select employee_id, last_name, first_name, department_id, department_name
+from departments
+   right outer join employees using(department_id)
+;
+
+select employee_id, last_name, first_name, e.department_id, department_name
+from employees e, departments d
+where e.department_id = d.department_id (+)
+;
+

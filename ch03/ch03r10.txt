@@ -1,0 +1,64 @@
+create table card_deck
+   (suit_rank       varchar2(5),
+    card_count      number)
+;
+
+insert into card_deck
+      select rank || '-' || suit, 0 from
+         (select 'A' rank from dual
+          union all
+          select '2' from dual
+          union all
+          select '3' from dual
+          union all
+          select '4' from dual
+          union all
+          select '5' from dual
+          union all
+          select '6' from dual
+          union all
+          select '7' from dual
+          union all
+          select '8' from dual
+          union all
+          select '9' from dual
+          union all
+          select '10' from dual
+          union all
+          select 'J' from dual
+          union all
+          select 'Q' from dual
+          union all
+          select 'K' from dual)
+      cross join
+         (select 'S' suit from dual
+          union all
+          select 'H' from dual
+          union all
+          select 'D' from dual
+          union all
+          select 'C' from dual)
+;
+
+select suit_rank from card_deck;
+
+select rank || '-' || suit, 0 from
+    card_ranks
+cross join
+    card_suits
+;
+
+select rank || '-' || suit, 0 from
+   (select 'A' rank from dual
+    union all
+    select '2' from dual
+. . .
+    select 'C' from dual)
+union (select 'J1', 0 from dual)
+union (select 'J2', 0 from dual)
+;
+
+select rank || '-' || suit, 0 from
+    card_ranks, card_suits
+;
+

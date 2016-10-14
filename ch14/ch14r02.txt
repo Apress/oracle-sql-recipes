@@ -1,0 +1,6 @@
+insert into oe.warehouses
+(warehouse_id, warehouse_spec, warehouse_name, location_id)
+values
+(10,
+xmltype('<?xml version="1.0"?><Warehouse><Building>Owned</Building><Area>15000</Area><Docks>1</Docks><DockType>Side load</DockType><WaterAccess>Y</WaterAccess><RailAccess>Y</RailAccess><Parking>Street</Parking><VClearance>10 ft</VClearance></Warehouse>'),
+'London',2300);

@@ -1,0 +1,10 @@
+select employee_id, first_name, last_name, department_id
+from employees
+where employee_id = 178
+;
+
+select employee_id, first_name, last_name, d.department_id, department_name
+from employees e join departments d
+   on nvl(e.department_id,110) = d.department_id
+;
+

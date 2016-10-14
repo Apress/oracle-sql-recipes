@@ -1,0 +1,3 @@
+select employee_id, last_name, rpad('X',floor(salary/1000), 'X') salary_graph
+from hr.employees
+order by salary desc;

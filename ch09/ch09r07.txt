@@ -1,0 +1,5 @@
+set transaction isolation level serializable;
+
+set transaction isolation level read committed;
+
+set transaction read only;

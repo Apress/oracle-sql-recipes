@@ -1,0 +1,3 @@
+select count(distinct cust_id) Seven_Day_Customers
+from sh.sales
+where time_id > to_date('31-DEC-2001') - 7;

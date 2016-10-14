@@ -1,0 +1,12 @@
+create table f_regs
+(reg_count number
+,d_date_id number
+)
+partition by range (d_date_id)(
+partition p_2009 values less than (20100101)
+  tablespace p_2009_tbsp,
+partition p_2010 values less than (20110101)
+  tablespace p_2010_tbsp,
+partition p_max  values less than (maxvalue)
+  tablespace p_max_tbsp
+);

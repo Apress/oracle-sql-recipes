@@ -1,0 +1,32 @@
+create database invrep controlfile reuse
+    maxlogfiles 16
+    maxlogmembers 4
+    maxdatafiles 1024
+    maxinstances 1
+    maxloghistory 680
+    character set "UTF8"
+logfile group 1
+          ('/ora01/oradata/INVREP/redo01a.log',
+           '/ora01/oradata/INVREP/redo01b.log')  size 200m reuse,
+        group 2
+          ('/ora01/oradata/INVREP/redo02a.log',
+           '/ora01/oradata/INVREP/redo02b.log' ) size 200m reuse,
+        group 3
+          ('/ora01/oradata/INVREP/redo03a.log',
+           '/ora01/oradata/INVREP/redo03b.log' ) size 200m reuse
+datafile
+'/ora01/oradata/INVREP/system01.dbf'
+    size 500m
+    reuse
+undo tablespace undotbs1 datafile
+'/ora01/oradata/INVREP/undotbs01.dbf'
+   size 800m
+   reuse
+sysaux datafile
+'/ora01/oradata/INVREP/sysaux01.dbf'
+   size 200m
+   reuse
+default temporary tablespace temp tempfile
+'/ora01/oradata/INVREP/temp01.dbf'
+   size 800m
+   reuse;

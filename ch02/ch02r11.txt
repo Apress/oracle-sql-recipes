@@ -1,0 +1,6 @@
+select first_name, last_name, hire_date,
+lag(hire_date, 1, '01-JUN-1987') over (order by hire_date) as Prev_Hire_Date,
+hire_date - lag(hire_date, 1, '01-JUN-1987') over (order by hire_date)
+as Days_Between_Hires
+from hr.employees
+order by hire_date;

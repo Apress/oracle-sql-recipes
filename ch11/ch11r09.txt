@@ -1,0 +1,52 @@
+select
+case rownum
+when 1 then
+'<html>' || chr(10) ||
+'<head>' || chr(10) ||
+'<style type="text/css">' || chr(10) ||
+' body {background-color: Lavender;}' || chr(10) ||
+' table.outer {width: 80%; border: Black solid 1px;}' || chr(10) ||
+' table.inner {width: 100%; border: none;}' || chr(10) ||
+' th {background-color: LightSteelBlue; color: WhiteSmoke;}' || chr(10) ||
+' .bar {background-color: LightSlateGray;}' || chr(10) ||
+' .empty {background-color: Lavender;}' || chr(10) ||
+' .left {text-align: left; padding-left: 5px;}' || chr(10) ||
+' .right {text-align: right; padding-right: 5px;}' || chr(10) ||
+'</style>' || chr(10) ||
+'</head>' || chr(10) ||
+'<body>' || chr(10) ||
+'<center>' || chr(10) ||
+'<table class="outer">' || chr(10) ||
+'<tr>' || chr(10) ||
+'<th width="15%">Employee ID</th>' || chr(10) ||
+'<th width="20%">Last Name</th>' || chr(10) ||
+'<th>Salary Graph</th>' || chr(10) || '</tr>'
+else ''
+end ||
+'<tr><td class="right">' || to_char(employee_id) || '</td>' || chr(10) ||
+'<td class="left">' || last_name || '</td>' || chr(10) ||
+'<td class="left">' ||
+'<table class="inner">' || chr(10) ||
+'<tr><td class="bar" width="' ||
+to_char(round(100 * salary / maxsalary)) ||
+'%">' || chr(38) || 'nbsp;</td>' || chr(10) ||
+'<td class="empty" width="' ||
+to_char(100 - round(100 * salary / maxsalary)) ||
+'%">' || chr(38) || 'nbsp;</td></tr>' || chr(10) ||
+'</table></td></tr>' || chr(10) ||
+case rownum
+CHAPTER 11 ¦ COMMON REPORTING PROBLEMS
+20
+when row_count then
+'</table>' || chr(10) ||
+'</center>' || chr(10) ||
+'</body>' || chr(10) ||
+'</html>'
+else ''
+end
+from
+(select employee_id, last_name, salary,
+count(*) over () as row_count,
+max(salary) over () as maxsalary
+from hr.employees
+order by salary desc);

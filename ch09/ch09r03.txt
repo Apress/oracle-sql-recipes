@@ -1,0 +1,15 @@
+update employees
+set salary = salary * 1.2
+where employee_id = 101
+;
+
+select * from employees e
+where employee_id = 101
+  for update of salary nowait
+;
+
+select * from employees e
+where employee_id = 101
+  for update of salary wait 15
+;
+

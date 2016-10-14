@@ -1,0 +1,22 @@
+select
+  '/u01/empl' ||
+  sys_connect_by_path(lower(last_name)||'.'||lower(first_name),'/') mgmt_path
+from employees
+   start with manager_id is null
+   connect by prior employee_id = manager_id;
+
+select 
+   sys_connect_by_path(lower(last_name)||'.'||lower(first_name),'/') mgmt_path
+from employees
+   start with last_name = 'Kochhar'
+   connect by prior employee_id = manager_id
+;
+
+select 
+  'D:\EMPL' ||
+  sys_connect_by_path(lower(last_name)||'_'||lower(first_name),'\') mgmt_path
+from employees
+   start with manager_id is null
+   connect by prior employee_id = manager_id
+;
+

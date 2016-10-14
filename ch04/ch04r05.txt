@@ -1,0 +1,46 @@
+create table email_signup
+   (user_account     varchar2(100),
+    signup_date      date,
+    user_email       varchar2(100),
+    friend1_email    varchar2(100),
+    friend2_email    varchar2(100),
+    friend3_email    varchar2(100))
+;
+
+select user_account, signup_date, src_col_name, friend_email
+from email_signup
+unpivot (
+         (friend_email) for src_col_name
+              in (user_email, friend1_email, friend2_email, friend3_email)
+        )
+;
+
+select user_account, signup_date, src_col_names, friend_email, friend_name
+from email_signup
+unpivot (
+         (friend_email,friend_name) for src_col_names
+              in ((user_email,user_name),
+                  (friend1_email,friend1_name),
+                  (friend2_email,friend2_name),
+                  (friend3_email,friend3_name))
+        )
+;
+
+select user_account, signup_date, 
+   'USER_EMAIL' as src_col_name, user_email as friend_email
+from email_signup
+where user_email is not null
+union
+select user_account, signup_date, 'FRIEND1_EMAIL', friend1_email
+from email_signup
+where friend1_email is not null
+union
+select user_account, signup_date, 'FRIEND2_EMAIL', friend2_email
+from email_signup
+where friend2_email is not null
+union
+select user_account, signup_date, 'FRIEND3_EMAIL', friend3_email
+from email_signup
+where friend3_email is not null
+;
+

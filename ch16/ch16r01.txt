@@ -1,0 +1,46 @@
+create directory lob_src as '/Download/Docs2Load';
+
+create sequence doc_seq;
+
+create table txt_docs
+(
+   doc_num        number,
+   doc_nm         varchar2(100),
+   doc_clb        clob,
+   ins_ts         timestamp
+);
+
+declare
+   src_clb        bfile;        /* point to source CLOB on file system  */
+   dst_clb        clob;         /* destination CLOB in table            */
+   src_doc_nm     varchar2(100) := 'Baseball Roster.doc';
+   src_offset     integer := 1; /* where to start in the source CLOB    */
+   dst_offset     integer := 1; /* where to start in the target CLOB    */
+   lang_ctx       integer := dbms_lob.default_lang_ctx;
+   warning_msg    number;       /* returns warning value if we find     */
+                                /* unconvertible characters             */
+begin
+   src_clb := bfilename('LOB_SRC',src_doc_nm);  -- assign pointer to file
+                                                -- within the Oracle directory
+   insert into txt_docs (doc_num, doc_nm, doc_clb, ins_ts)
+      values(doc_seq.nextval, src_doc_nm, empty_clob(), systimestamp)
+      returning doc_clb into dst_clb;  -- create LOB placeholder  column first
+   dbms_lob.open(src_clb, dbms_lob.lob_readonly);
+   dbms_lob.loadclobfromfile
+      (
+       dest_lob =>     dst_clb,
+       src_bfile =>    src_clb,
+       amount =>       dbms_lob.lobmaxsize,
+       dest_offset =>  dst_offset,
+       src_offset =>   src_offset,
+       bfile_csid =>   dbms_lob.default_csid,
+       lang_context => lang_ctx,
+       warning =>      warning_msg
+      );
+   dbms_lob.close(src_clb);
+   commit;
+   dbms_output.put_line('Wrote CLOB to table: ' || src_doc_nm);
+end;
+
+select doc_num, doc_nm, ins_ts, length(doc_clb) from txt_docs;
+

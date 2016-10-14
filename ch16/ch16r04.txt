@@ -1,0 +1,90 @@
+-- create image table with list of URLs
+-- and retrieve those images via HTTP
+
+declare
+
+   cursor img_list is -- image URLs to retrieve
+      select img_url from img_list;
+      
+   r_img_list               img_list%rowtype;
+
+   lBlob               blob;            -- locator for current image
+   l_http_request      utl_http.req;
+   l_http_response     utl_http.resp;
+   l_raw               raw(32767);      -- blob buffer
+
+begin
+   dbms_output.put_line('*** Begin image load.');
+   open img_list;
+
+   loop
+      fetch img_list into r_img_list;
+      exit when img_list%notfound;
+      -- initialize image table row with empty blob
+      insert into web_img(img_num, img_url, img_blb, ins_ts)
+         values(web_img_seq.nextval, r_img_list.img_url, empty_blob(), systimestamp)
+         returning img_blb into lBlob;  -- save pointer for local use
+      dbms_output.put_line('Attempt retrieval of: ' || r_img_list.img_url);
+      -- attempt to retrieve image via HTTP
+      l_http_request  := utl_http.begin_request(r_img_list.img_url); -- request
+      l_http_response := utl_http.get_response(l_http_request); -- response back
+      dbms_output.put_line('   HTTP stat code: ' || l_http_response.status_code);           
+      dbms_output.put_line('   HTTP resp reason phrase: ' ||
+                                  l_http_response.reason_phrase);
+
+      if l_http_response.status_code = 200 then /* image file found */
+         dbms_lob.open(lBlob, dbms_lob.lob_readwrite);
+         begin
+            loop
+              utl_http.read_raw(l_http_response, l_raw, 32767);
+              dbms_lob.writeappend (lBlob, utl_raw.length(l_raw), l_raw);
+            end loop;
+            exception
+               when utl_http.end_of_body then
+                  utl_http.end_response(l_http_response);
+         end; /* retrieving BLOB parts */
+         dbms_lob.close(lBlob);
+         dbms_output.put_line('   Image URL loaded: '
+                                || web_img_seq.currval || ' ' 
+                                || r_img_list.img_url);
+      else /* image not found */
+         dbms_output.put_line('   No Image at this URL');
+         utl_http.end_response(l_http_response);
+      end if;
+   end /* img_list */ loop;
+
+   close img_list;
+   commit;
+   
+   dbms_output.put_line('*** Done importing images.');
+   
+   exception /* unexpected error, close everything and get out */
+      when others then
+         dbms_output.put_line('Unexpected error');
+         utl_http.end_response(l_http_response);
+         close img_list;
+         raise;
+end;
+
+
+select img_url from img_list;
+
+create table img_list
+(
+   img_url        varchar2(255)
+);
+
+create table web_img
+(
+   img_num        number,
+   img_url        varchar2(255),
+   img_blb        blob,
+   ins_ts         timestamp
+);
+
+create sequence web_img_seq;
+
+select img_num, img_url, length(img_blb)
+from web_img
+order by img_num;
+

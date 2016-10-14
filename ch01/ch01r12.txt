@@ -1,0 +1,7 @@
+select department_name
+from hr.departments
+where location_id in
+(select location_id
+from hr.locations
+where country_id = 'US'
+or country_id = 'CA');

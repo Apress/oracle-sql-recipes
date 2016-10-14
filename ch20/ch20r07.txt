@@ -1,0 +1,16 @@
+REM *****************************************************
+REM * File : freesp.sql
+REM *****************************************************
+SET PAGESIZE 100 LINES 132 ECHO OFF VERIFY OFF FEEDB OFF SPACE 1 TRIMSP ON
+COMPUTE SUM OF a_byt t_byt f_byt ON REPORT
+select * from
+(
+select
+ segment_name
+,partition_name
+,segment_type
+,owner
+,bytes/1024/1024 mb
+from dba_segments
+order by bytes desc)
+where rownum <=20;

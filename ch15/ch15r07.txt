@@ -1,0 +1,10 @@
+create table orders(
+ order_id    number
+,order_date  date
+,constraint order_pk primary key(order_id)
+)
+partition by range(order_date)
+(partition p10  values less than (to_date('01-jan-2010','dd-mon-yyyy'))
+,partition p11  values less than (to_date('01-jan-2011','dd-mon-yyyy'))
+,partition pmax values less than (maxvalue)
+);

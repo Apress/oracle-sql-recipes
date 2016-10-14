@@ -1,0 +1,26 @@
+-- suppress sql output in results
+set echo off        
+-- eliminate row count message at end
+set feedback off    
+-- make line long enough to hold all row data
+set linesize 1000   
+-- suppress headings and page breaks
+set pagesize 0      
+-- eliminate SQL*Plus prompts from output
+set sqlprompt ''    
+-- eliminate trailing blanks
+set trimspool on    
+-- send output to file
+spool emp_sal.csv
+select '"EMPLOYEE_ID","LAST_NAME","FIRST_NAME","SALARY"' from dual
+union all
+select employee_id || ',"' ||
+       last_name || '","' ||
+       first_name || '",' ||
+       salary
+from employees
+;
+spool off
+exit
+
+

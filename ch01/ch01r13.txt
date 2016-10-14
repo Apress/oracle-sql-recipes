@@ -1,0 +1,7 @@
+select first_name, last_name
+from hr.employees
+where commission_pct is null;
+
+select first_name, last_name
+from hr.employees
+where commission_pct is not null;

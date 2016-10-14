@@ -1,0 +1,15 @@
+with order_item_query as
+   (select customer_id, product_id, quantity
+    from orders join order_items using(order_id))
+select * from order_item_query
+pivot (
+       sum(quantity) as sum_qty
+          for (product_id) in (3170 as P3170,
+                               3176 as P3176,
+                               3182 as P3182,
+                               3163 as P3163,
+                               3165 as P3165)
+      )
+order by customer_id
+;
+

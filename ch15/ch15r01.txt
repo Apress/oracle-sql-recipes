@@ -1,0 +1,5 @@
+select * from (
+select owner, segment_name, segment_type, sum(extents) num_ext, sum(bytes) tot
+from dba_segments
+group by owner, segment_name, segment_type order by sum(extents) desc)
+where rownum < 10;

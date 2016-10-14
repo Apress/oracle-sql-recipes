@@ -1,0 +1,8 @@
+select department_id, first_name, last_name,
+min(salary)
+over (partition by department_id) "MinSal",
+salary,
+max(salary)
+over (partition by department_id) "MaxSal"
+from hr.employees
+order by department_id, salary;

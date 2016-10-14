@@ -1,0 +1,30 @@
+select employee_id, last_name || ', ' || first_name full_name, email
+from employees
+;
+
+select employee_id, concat(concat(last_name,', '),first_name) full_name, email
+from employees
+;
+
+select employee_id, trim(last_name) || ', ' || trim(first_name) full_name, email
+from employees
+;
+
+select employee_id, last_name || ', ' || first_name full_name, email
+from celebrity_employees
+;
+
+select employee_id,
+   trim(last_name) || 
+   nvl2(trim(first_name),', ','') ||
+   trim(first_name) full_name,
+   email
+from employees
+;
+
+select employee_id, email, 
+   upper(substr(email,1,1)) || ' ' || initcap(substr(email,2)) name
+from employees
+;
+
+

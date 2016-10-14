@@ -1,0 +1,13 @@
+select department_name
+from hr.departments d
+where exists
+(select e.employee_id
+from hr.employees e
+where d.manager_id = e.employee_id);
+
+select department_name
+from hr.departments d
+where not exists
+(select e.employee_id
+from hr.employees e
+where d.manager_id = e.employee_id);

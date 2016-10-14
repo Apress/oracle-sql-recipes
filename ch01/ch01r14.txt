@@ -1,0 +1,13 @@
+update hr.employees
+set last_name = 'SMITH'
+where employee_id = 171;
+
+select last_name
+from hr.employees
+order by last_name;
+
+alter session set NLS_SORT='BINARY_CI';
+
+select last_name
+from hr.employees
+order by last_name;

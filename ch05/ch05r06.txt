@@ -1,0 +1,7 @@
+select employee_id, last_name, salary, commission_pct
+from hr.employees
+order by
+case
+when commission_pct is null then salary
+else salary * (1+commission_pct)
+end desc;

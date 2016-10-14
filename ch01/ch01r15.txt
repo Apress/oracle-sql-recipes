@@ -1,0 +1,5 @@
+alter session set NLS_COMP='LINGUISTIC';
+
+select first_name, last_name
+from hr.employees
+where last_name = 'smith';

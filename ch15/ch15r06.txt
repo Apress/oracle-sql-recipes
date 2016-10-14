@@ -1,0 +1,7 @@
+create table f_sales(
+ sales_amt number
+,d_date    date
+)
+partition by range (d_date)
+interval(numtoyminterval(1, 'YEAR'))
+(partition p1 values less than (to_date('01-jan-2010','dd-mon-yyyy')));

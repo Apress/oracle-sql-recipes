@@ -1,0 +1,15 @@
+create sequence odd_number_generator
+start with 3
+increment by 2
+maxvalue 999999
+nocycle
+nocache
+order;
+
+create sequence even_number_generator
+start with 2
+increment by 2
+maxvalue 999999
+nocycle
+nocache
+order;

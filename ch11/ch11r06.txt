@@ -1,0 +1,8 @@
+select department_id, last_name, salary as third_salary
+from (
+select department_id, last_name, salary,
+row_number()
+over (partition by department_id order by salary desc) sal_position
+from hr.employees )
+sal_by_dept
+where sal_by_dept.sal_position = 3;

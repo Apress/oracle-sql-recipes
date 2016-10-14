@@ -1,0 +1,19 @@
+-- answer_yes.sql
+PROMPT
+PROMPT Continuing...
+And here’s answer_no.sql:
+-- answer_no.sql
+PROMPT
+PROMPT Quitting and Discarding changes...
+ROLLBACK;
+EXIT;
+--
+WHENEVER SQLERROR EXIT FAILURE ROLLBACK;
+WHENEVER OSERROR EXIT FAILURE ROLLBACK;
+SELECT name FROM v$database;
+SHOW user;
+SET ECHO OFF;
+PROMPT
+ACCEPT answer PROMPT 'Correct environment?  Enter yes to continue: '
+@@answer_&answer..sql
+

@@ -1,0 +1,27 @@
+SET LINESIZE 141 TRIMSPOOL ON PAGES 66
+COL username FORMAT A8 HEAD "User|Name"
+COL opname FORMAT A16 HEAD "Operation|Type"
+COL sql_text FORMAT A33 HEAD "SQL|Text" TRUNC
+COL start_time FORMAT A15 HEAD "Start|Time"
+COL how_long FORMAT 99,990 HEAD "Time|Run"
+COL secs_left FORMAT 99,990 HEAD "Appr.|Secs Left"
+COL sofar FORMAT 9,999,990 HEAD "Work|Done"
+COL totalwork FORMAT 9,999,990 HEAD "Total|Work"
+COL percent FORMAT 999.90 HEAD "%|Done"
+--
+select
+a.username
+,a.opname
+,b.sql_text
+,to_char(a.start_time,'DD-MON-YY HH24:MI') start_time
+,a.elapsed_seconds how_long
+,a.time_remaining secs_left
+,a.sofar
+,a.totalwork
+,round(a.sofar/a.totalwork*100,2) percent
+from v$session_longops a
+,v$sql b
+where a.sql_address = b.address
+and a.sql_hash_value = b.hash_value
+and a.sofar <> a.totalwork
+and a.totalwork != 0;

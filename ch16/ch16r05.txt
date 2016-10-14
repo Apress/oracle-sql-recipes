@@ -1,0 +1,54 @@
+create table web_img2
+(
+   img_num        number primary key,
+   img_url        varchar2(255),
+   img_blb        bfile,
+   ins_ts         timestamp,
+constraint ak1_web_img2 unique(img_url)
+);
+
+create sequence web_img2_seq;
+
+create or replace procedure load_bfile ( dir_name varchar2, src_img_nm in varchar2 )
+is
+   src_blb        bfile;        /* point to source BLOB on file system  */
+   file_exists    boolean;      /* return value from UTL_FILE.FGETATTR  */
+   file_len       number;
+   blksize        binary_integer;
+begin
+   src_blb := bfilename(dir_name, src_img_nm);
+   insert into web_img2 (img_num, img_nm, img_blb, ins_ts)
+      values(web_img2_seq.nextval, src_img_nm, src_blb, systimestamp);
+   -- check to see if file is there at this moment
+   utl_file.fgetattr(dir_name, src_img_nm, file_exists, file_len, blksize);
+   if file_exists then
+      commit;
+      dbms_output.put_line('Wrote BFILE pointer to table: ' || src_img_nm);
+   else
+      rollback;
+      dbms_output.put_line('BLOB ' || src_img_nm 
+              || ' in directory ' 
+              || dir_name 
+              || ' does not exist.');
+   end if;
+end;
+
+begin
+   load_bfile('LOB_SRC','Screen Capture.bmp');
+end;
+
+begin
+   load_bfile('LOB_SRC','Cake Boss.bmp');
+end;
+
+create or replace function get_bfile_attrs (bfile_obj in bfile)
+return varchar2 is
+   dir_alias      varchar2(30);
+   file_name      varchar2(100);
+begin
+   dbms_lob.filegetname(bfile_obj, dir_alias, file_name);
+   return('BFILE: Directory=' || dir_alias || ' File=' || file_name);
+end;
+
+select img_num, img_nm, get_bfile_attrs(img_blb) from web_img2;
+

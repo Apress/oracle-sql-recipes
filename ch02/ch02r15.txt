@@ -1,0 +1,38 @@
+insert into hr.employees
+(employee_id, first_name, last_name, email, phone_number, hire_date, job_id,
+salary, commission_pct, manager_id, department_id)
+Values
+(210, 'Janette', 'King', 'JKING2', '650.555.8880', '25-MAR-2009', 'SA_REP',
+3500, 0.25, 145, 80);
+
+Insert into hr.employees
+(employee_id, first_name, last_name, email, phone_number, hire_date, job_id,
+salary, commission_pct, manager_id, department_id)
+Values
+(211, 'Patrick', 'Sully', 'PSULLY2', '650.555.8881', '25-MAR-2009', 'SA_REP',
+3500, 0.25, 145, 80);
+
+Insert into hr.employees
+(employee_id, first_name, last_name, email, phone_number, hire_date, job_id,
+salary, commission_pct, manager_id, department_id)
+Values
+(212, 'Allen', 'McEwen', 'AMCEWEN2', '650.555.8882', '25-MAR-2009', 'SA_REP',
+3500, 0.25, 145, 80);
+commit;
+
+select employee_id, first_name, last_name
+from hr.employees
+where first_name in ('Janette','Patrick','Allan')
+and last_name in ('King','Sully','McEwen')
+order by first_name, last_name;
+
+delete from hr.employees
+where rowid in
+(select rowid
+from
+(select first_name, last_name, rowid,
+row_number() over
+(partition by first_name, last_name order by employee_id)
+staff_row
+from hr.employees)
+where staff_row > 1);

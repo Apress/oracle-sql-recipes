@@ -1,0 +1,12 @@
+select employee_id, last_name, job_id,
+   substr(job_id,1,2) dept_code,
+   substr(job_id,4) job_code
+from employees
+;
+
+select employee_id, last_name, job_id,
+   substr(job_id,1,instr(job_id,'_')-1) dept_code,
+   substr(job_id,instr(job_id,'_')+1) job_code
+from employees
+;
+

@@ -1,0 +1,14 @@
+select sum(salary+100)
+from employees
+where department_id = 100
+;
+
+select sum(salary-50)
+from employees
+where department_id = 100
+;
+
+set transaction read only;
+
+set transaction read write;
+

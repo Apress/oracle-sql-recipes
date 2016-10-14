@@ -1,0 +1,3 @@
+select first_name, last_name,
+to_char(hire_date, 'Day, Month DDTH, YYYY') formatted_hire_date
+from hr.employees;

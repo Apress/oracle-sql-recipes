@@ -1,0 +1,26 @@
+select employee_id, level, 
+   lpad(' ',(level-1)*3) || last_name || ', ' || first_name full_name
+from employees
+start with manager_id is null
+connect by manager_id = prior employee_id
+order siblings by last_name, first_name
+;
+
+select employee_id, level, 
+   lpad(' ',(level-1)*3) || last_name || ', ' || first_name full_name
+from employees
+start with manager_id is null
+connect by manager_id = prior employee_id
+   and not (last_name = 'Cambrault' and first_name = 'Gerald')
+order siblings by last_name, first_name
+;
+
+select employee_id, level, 
+   lpad(' ',(level-1)*3) || last_name || ', ' || first_name full_name
+from employees
+where not (last_name = 'Cambrault' and first_name = 'Gerald')
+start with manager_id is null
+connect by manager_id = prior employee_id
+order siblings by last_name, first_name
+;
+

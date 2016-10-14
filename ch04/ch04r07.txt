@@ -1,0 +1,47 @@
+update orders
+set order_mode_num =
+   case order_mode
+      when 'direct' then 1
+      when 'online' then 2
+      when 'walmart' then 3
+      when 'amazon' then 4
+      else 0
+   end
+;
+
+update orders
+set order_mode_num =
+   case
+      when order_mode = 'direct' and
+           customer_id < 102 then 5
+      when order_mode = 'direct' then 1
+      when order_mode = 'online' then 2
+      when order_mode = 'walmart' then 3
+      when order_mode = 'amazon' then 4
+      else 0
+   end
+;
+
+select order_id, customer_id, order_mode_num,
+   case order_mode_num
+       when 1 then 'Direct, non-employee'
+       when 2 then 'Online'
+       when 3 then 'WalMart'
+       when 4 then 'Amazon'
+       when 5 then 'Direct, employee'
+       else 'unknown'
+   end order_mode_text
+from orders
+where order_id in (2458,2397,2355,2356)
+;
+
+update orders
+set order_mode_num =
+   decode(order_mode,
+             'direct',1,
+             'online',2,
+             'walmart',3,
+             'amazon',4,
+          0)
+;
+

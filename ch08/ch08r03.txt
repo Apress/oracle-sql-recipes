@@ -1,0 +1,12 @@
+create table oe.coupons (
+coupon_code number(9,0) not null,
+customer_id number(6,0) not null,
+coupon_value number(5,2) not null,
+restrictions varchar2(100)
+);
+
+insert into oe.coupons values
+(1, 150, 29.95, 'No restrictions');
+commit;
+
+select * from oe.coupons;

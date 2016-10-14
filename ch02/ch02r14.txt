@@ -1,0 +1,9 @@
+select to_char(order_date, 'MM') as OrderMonth, sum(order_total) as MonthTotal,
+avg(sum(order_total))
+over
+(order by to_char(order_date, 'MM') rows between 3 preceding and current row)
+as RollingQtrAverage
+from oe.orders
+where order_date between '01-JAN-1999' and '31-DEC-1999'
+group by to_char(order_date, 'MM')
+order by 1;

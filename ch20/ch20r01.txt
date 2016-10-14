@@ -1,0 +1,31 @@
+select
+round(100*CPU_sec/available_time,2) "ORACLE CPU TIME AS % AVAIL."
+,round(100*(DB_sec - CPU_sec)/available_time,2) "NON-IDLE WAITS AS % AVAIL."
+,case
+sign(available_time - DB_sec)
+when 1 then round(100*(available_time - DB_sec) / available_time, 2)
+else 0
+end "ORACLE IDLE AS % AVAIL."
+from
+(
+select
+(sysdate - i.startup_time) * 86400 * c.cpus available_time
+,t.DB_sec
+,t.CPU_sec
+from v$instance i
+,(select value cpus
+from v$parameter
+where name = 'cpu_count') c
+,(select
+sum(case name
+when 'DB time' then round(value/100)
+else 0
+end) DB_sec
+,sum(case name
+when 'DB time' then 0
+else round(value/100)
+end) CPU_sec
+from v$sysstat
+where name in ('DB time', 'CPU used by this session')) t
+where i.instance_number = userenv('INSTANCE')
+);

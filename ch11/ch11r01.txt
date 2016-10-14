@@ -1,0 +1,18 @@
+select job_id, manager_id, employee_id
+from hr.employees
+order by job_id, manager_id, employee_id;
+
+select
+case when job_ctr = 1 then job_id else null end "JOB_ID",
+case when jobman_ctr = 1 then manager_id else null end "MANAGER_ID",
+employee_id
+from (
+select job_id,
+row_number() over (partition by job_id order by job_id)
+as job_ctr,
+manager_id,
+row_number() over (partition by job_id, manager_id order by job_id, manager_id)
+as jobman_ctr,
+employee_id
+from hr.employees
+);

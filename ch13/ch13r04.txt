@@ -1,0 +1,46 @@
+select 
+   lpad(' ',(level-1)*3) || last_name || ', ' || first_name full_name,
+   level, connect_by_isleaf is_leaf
+from employees
+   start with manager_id is null
+   connect by prior employee_id = manager_id
+;
+
+select
+   lpad(' ',(level-1)*3) || last_name || ', ' || first_name full_name,
+   level, connect_by_isleaf is_leaf
+from employees
+where level > 1 and connect_by_isleaf = 0
+   start with manager_id is null
+   connect by prior employee_id = manager_id
+;
+
+select 
+   last_name || ', ' || first_name full_name, level lvl,
+   sys_connect_by_path(lower(last_name)||'.'||lower(first_name),'/') mgmt_path
+from employees
+where connect_by_isleaf = 1
+   start with manager_id is null
+   connect by prior employee_id = manager_id
+;
+
+select 
+   last_name || ', ' || first_name full_name, level lvl,
+   connect_by_root last_name top_last_name,
+   connect_by_root first_name top_first_name
+from employees
+where connect_by_isleaf = 1
+   start with manager_id is null
+   connect by prior employee_id = manager_id
+;
+
+select 
+   last_name || ', ' || first_name full_name, level lvl,
+   connect_by_root last_name top_last_name,
+   connect_by_root first_name top_first_name
+from employees
+where connect_by_isleaf = 1
+   start with manager_id = 100
+   connect by prior employee_id = manager_id
+;
+

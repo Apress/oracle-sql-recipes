@@ -1,0 +1,9 @@
+select employee_id, first_name, last_name, sysdate - hire_date Length_of_employment
+from hr.employees;
+
+select employee_id, first_name, last_name,
+(sysdate - hire_date)*86400 Emp_Length_Seconds,
+extract(year from (sysdate - hire_date) year to month) || ' years, ' ||
+extract(month from (sysdate - hire_date) year to month) || ' months. '
+Emp_Length_Readable
+from hr.employees;

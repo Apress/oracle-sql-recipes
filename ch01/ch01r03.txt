@@ -1,0 +1,4 @@
+select employee_id, first_name, last_name, hire_date, salary
+from hr.employees
+where salary > 5000
+order by last_name, first_name;

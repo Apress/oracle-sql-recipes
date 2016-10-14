@@ -1,0 +1,28 @@
+select employee_id, last_name, first_name, salary
+from employees
+where salary < 0.8 * (
+                      select avg(salary)
+                      from employees
+                      where department_id != 90
+                     )
+;
+
+select employee_id, last_name, first_name, salary
+from employees
+where salary = any (
+                    select salary
+                    from employees
+                    where department_id = 90
+                   )
+;
+
+select department_id, avg(salary) avg_salary
+from employees
+group by department_id
+having avg(salary) > (
+                      select avg(salary)
+                      from employees
+                      where department_id = 60
+                     )
+;
+

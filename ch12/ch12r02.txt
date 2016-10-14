@@ -1,0 +1,9 @@
+delete from parties a
+where a.rowid <
+(select max(b.rowid)
+ from parties b
+ where a.party_id = b.party_id);
+
+
+
+

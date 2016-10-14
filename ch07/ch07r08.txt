@@ -1,0 +1,24 @@
+create index ie1_locations on locations(regexp_instr(city,'\s\S+\s'));
+
+select location_id, street_address, city, state_province
+from locations 
+where regexp_instr(city,'\s\S+\s') > 0
+;
+
+create index ie1_employees on employees(upper(last_name));
+
+create index ie1_emp_sal_hist on emp_sal_hist(salary + nvl(bonus,0));
+
+select employee_id
+from emp_sal_hist
+where fiscal_year = 2008
+  and salary+nvl(bonus,0) >= 200000
+;
+
+select employee_id
+from emp_sal_hist
+where fiscal_year = 2008
+   and salary+decode(bonus,null,0,bonus) >= 200000
+;
+
+create index ie2_employees on employees(sysdate-hire_date);

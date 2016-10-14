@@ -1,0 +1,11 @@
+select avg(salary)
+from hr.employees;
+
+select sum(salary)
+from hr.employees;
+
+Select count(salary)
+from hr.employees;
+
+select min(salary), max(salary)
+from hr.employees;

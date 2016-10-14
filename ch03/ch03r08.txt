@@ -1,0 +1,15 @@
+select employee_id, last_name, first_name from employees
+minus
+select employee_id, last_name, first_name from employees_bonus
+;
+
+select * from employees
+minus
+select * from employees_bonus
+;
+
+select * from employees_bonus
+minus
+select * from employees
+;
+

@@ -1,0 +1,14 @@
+select product_id, product_name, list_price from
+(select prodinfo.*, rownum r
+from
+(select product_id, product_name, list_price
+from oe.product_information
+order by product_id) prodinfo
+where rownum <= 10)
+where r >= 1;
+
+select product_id, product_name, list_price from
+(select product_id, product_name, list_price,
+row_number() over (order by product_id) r
+from oe.product_information)
+where r between 1 and 10;

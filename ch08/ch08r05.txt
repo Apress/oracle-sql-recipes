@@ -1,0 +1,8 @@
+-- note to readers.  The the NLS_CURRENCY character in this example is the Euro symbol.
+-- If this symbol doesn't display for you, check your locale/character set.
+
+select to_number
+('€12.345.687,90',
+'L99G999G999D99',
+' nls_currency = ''€'' nls_numeric_characters = '',.'' ') Profit
+from dual;

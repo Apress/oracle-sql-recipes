@@ -1,0 +1,15 @@
+select a.num_rows/b.actual_rows
+from user_tables a
+,(select count(*) actual_rows from &&table_name) b
+where a.table_name=upper('&&table_name');
+--
+set head off pages 0 lines 132 trimspool on
+spo show_stale.sql
+select
+'select ' || '''' || table_name || ': ' || '''' || '||' || chr(10) ||
+' round(decode(b.actual_rows,0,0,a.num_rows/b.actual_rows),2) ' || chr(10) ||
+'from user_tables a ' ||
+',(select count(*) actual_rows from ' || table_name || ') b' || chr(10) ||
+'where a.table_name=(' || '''' || table_name || '''' || ');'
+from user_tables;
+spo off;

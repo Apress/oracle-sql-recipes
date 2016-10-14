@@ -1,0 +1,19 @@
+create table hr.dept_budget
+(
+department_id number(4,0),
+salary_budget number(10,-3)
+);
+
+insert into hr.dept_budget
+select department_id, sum(salary * 12)
+from hr.employees
+group by department_id;
+
+select *
+from hr.dept_budget
+order by department_id;
+
+select department_id, sum(salary * 12)
+from hr.employees
+group by department_id
+order by department_id;

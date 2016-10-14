@@ -1,0 +1,5 @@
+update hr.employees
+set job_id = 'ST_MAN',
+phone_number = '650.124.9876',
+salary = salary * 1.5
+where employee_id = 131;

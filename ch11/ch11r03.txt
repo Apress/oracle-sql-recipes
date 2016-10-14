@@ -1,0 +1,15 @@
+select department_id, employee_id, first_name, last_name,
+case
+when hire_date = first_hire and hire_date = last_hire
+then 'Shortest and Longest Serving'
+when hire_date = first_hire then 'Longest Serving'
+when hire_date = last_hire then 'Shortest Serving'
+end Department_Tenure
+from (
+select department_id, employee_id, first_name, last_name, hire_date,
+max(hire_date) over(partition by department_id) first_hire,
+min(hire_date) over(partition by department_id) last_hire
+from hr.employees
+) Hire_Dates
+where hire_date in (first_hire, last_hire)
+order by department_id, department_tenure;

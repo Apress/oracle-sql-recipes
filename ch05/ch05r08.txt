@@ -1,0 +1,35 @@
+select to_char(19452,'xxxxx')
+from dual;
+
+create or replace function rebase_number
+(starting_value in integer, new_base in number)
+return varchar2
+is
+rebased_value varchar2(4000) default NULL;
+working_remainder integer default starting_value;
+char_string varchar2(36) default '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+sign varchar2(1) default '';
+begin
+if (starting_value < 0) then
+sign := '-';
+working_remainder := abs(working_remainder);
+end if;
+loop
+rebased_value := substr(char_string, mod(working_remainder,new_base)+1, 1)
+|| rebased_value;
+working_remainder := trunc(working_remainder/new_base);
+exit when (working_remainder = 0);
+end loop;
+rebased_value := sign || rebased_value;
+return rebased_value;
+end rebase_number;
+/
+
+select rebase_number(19452,16) as DEC_TO_HEX
+from dual;
+
+select rebase_number(19452,8) as DEC_TO_OCTAL
+from dual;
+
+select rebase_number(19452,2) as DEC_TO_BINARY
+from dual;

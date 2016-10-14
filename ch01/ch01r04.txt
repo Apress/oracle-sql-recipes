@@ -1,0 +1,6 @@
+insert into hr.employees
+(employee_id, first_name, last_name, email, phone_number, hire_date, job_id,
+salary, commission_pct, manager_id, department_id)
+values
+(207, 'John ', 'Doe ', 'JDOE ', '650.555.8877 ', '25-MAR-2009 ', 'SA_REP ',
+3500, 0.25, 145, 80);

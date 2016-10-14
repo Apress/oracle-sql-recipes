@@ -1,0 +1,5 @@
+select last_name, count(*)
+from hr.employees
+where last_name = 'Fay'
+group by last_name
+having count(*) = 1;

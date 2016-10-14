@@ -1,0 +1,8 @@
+select count(*) Customer_Count, total_spend_histogram * 50000 Spend_Bucket
+from
+(select customer_id, sum(order_total),
+width_bucket(sum(order_total),0,500000,10) as total_spend_histogram
+from oe.orders
+group by customer_id)
+group by total_spend_histogram * 50000
+order by 2;

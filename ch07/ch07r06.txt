@@ -1,0 +1,15 @@
+select location_id, street_address,
+   city, postal_code
+from locations;
+
+select location_id, street_address,
+   city, postal_code
+from locations
+where regexp_count(street_address,'\s') >= 3
+; 
+
+select location_id, street_address, city
+from locations
+where regexp_count(street_address,'east [0-9]*',5,'i') > 0
+;
+

@@ -1,0 +1,9 @@
+select jh.JobsHeld, count(*) as StaffCount
+from
+(select u.employee_id, count(*) as JobsHeld
+from
+(select employee_id from hr.employees
+union all
+select employee_id from hr.job_history) u
+group by u.employee_id) jh
+group by jh.JobsHeld;

@@ -1,0 +1,9 @@
+select e.employee_id,
+case
+when old.job_id is null then e.hire_date
+else old.end_date end
+job_start_date
+from hr.employees e left outer join hr.job_history old
+on e.employee_id = old.employee_id
+where e.department_id = 50
+order by e.employee_id;

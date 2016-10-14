@@ -1,0 +1,40 @@
+create or replace type employee_map_type as object (
+employee_id number(6),
+first_name varchar2(20),
+last_name varchar2(25),
+email varchar2(25),
+phone_number varchar2(20),
+hire_date date,
+job_id varchar2(10),
+salary number(8,2),
+commission_pct number(2,2),
+manager_id number(6),
+department_id number(4)
+);
+/
+
+create or replace procedure employee_xml (emp_id IN number)
+as
+xml_employee xmltype;
+begin
+select
+sys_xmlgen
+(employee_map_type
+(e.employee_id,
+e.first_name,
+e.last_name,
+e.email,
+e.phone_number,
+e.hire_date,
+e.job_id,
+e.salary,
+e.commission_pct,
+e.manager_id,
+e.department_id)
+) into xml_employee
+from hr.employees
+where e.employee_id = emp_id;
+dbms_output.put_line(xml_employee.getclobval());
+end;
+
+call employee_xml(150);

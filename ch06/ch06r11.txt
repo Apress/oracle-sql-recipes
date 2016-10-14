@@ -1,0 +1,4 @@
+select to_char(order_date, 'MM') Order_Month, count(*) Order_Count
+from oe.orders
+group by to_char(order_date, 'MM')
+order by 1;

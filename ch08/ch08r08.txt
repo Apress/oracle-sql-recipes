@@ -1,0 +1,2 @@
+select employee_id, job_id, salary * (1 + nvl(commission_pct,0)) final_pay
+from hr.employees;

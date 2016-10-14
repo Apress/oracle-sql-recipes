@@ -1,0 +1,16 @@
+create table f_sales(
+  sales_amnt number
+ ,reg_code   varchar2(3)
+ ,d_date_id  number
+)
+partition by range(d_date_id)
+subpartition by list(reg_code)
+(partition p2010 values less than (20100101)
+  (subpartition p1_north values ('ID','OR')
+  ,subpartition p1_south values ('AZ','NM')
+   ),
+ partition p2011 values less than (20110101)
+  (subpartition p2_north values ('ID','OR')
+  ,subpartition p2_south values ('AZ','NM')
+  )
+);

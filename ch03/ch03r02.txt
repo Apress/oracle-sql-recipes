@@ -1,0 +1,10 @@
+select employee_id, first_name, last_name from employees_act;
+
+select employee_id, first_name, last_name from employees_new;
+
+select employee_id, first_name, last_name from employees_act
+union 
+select employee_id, first_name, last_name from employees_new
+order by employee_id
+;
+

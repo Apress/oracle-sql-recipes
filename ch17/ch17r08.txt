@@ -1,0 +1,14 @@
+CONN &user_name/&password
+DEFINE sel_user=SELECT_APP
+SET LINES 132 PAGES 0 ECHO OFF FEEDBACK OFF VERIFY OFF HEAD OFF TERM OFF TRIMS ON
+SPO gen_grants_dyn.sql
+--
+SELECT 'grant select on ' || table_name || ' to &&sel_user ;'
+FROM user_tables;
+--
+SPO OFF;
+SET ECHO ON FEEDBACK ON VERIFY ON HEAD ON TERM ON;
+--
+@@gen_grants_dyn
+
+

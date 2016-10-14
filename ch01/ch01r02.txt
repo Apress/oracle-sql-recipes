@@ -1,0 +1,4 @@
+select *
+from hr.employees
+where department_id = 50
+and salary < 7500;

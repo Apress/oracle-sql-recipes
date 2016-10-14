@@ -1,0 +1,20 @@
+load data
+infile load_lobs.list
+append into table image
+fields terminated by ','
+trailing nullcols
+(
+ img_num        char,
+ img_nm         char(100),
+ img_file_nm    filler char(100),
+ img_blb        lobfile(img_file_nm) terminated by EOF,
+ ins_ts         "systimestamp"
+)
+
+101,Water Table Analysis,E:\Download\Docs2Load\Water Table Analysis.doc
+102,My Antiques,My Antiques.docx
+103,Screen Capture for Book,Screen Capture.bmp
+
+sqlldr userid=rjb/rjb@recipes control=load_lobs.ctl
+
+select img_num, img_nm, ins_ts, length(img_blb) from image;

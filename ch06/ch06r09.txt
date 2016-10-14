@@ -1,0 +1,2 @@
+select trunc(sysdate,'mm')
+from dual;

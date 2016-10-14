@@ -1,0 +1,21 @@
+select employee_id, first_name, last_name from employees_act
+order by employee_id;
+
+select employee_id, first_name, last_name from employees_new
+order by employee_id;
+
+select employee_id, first_name, last_name,
+   count(act_emp_src) act_emp_row_count,
+   count(new_emp_src) new_emp_row_count
+from
+   (
+    select ea.*, 1 act_emp_src, to_number(NULL) new_emp_src
+    from employees_act ea
+    union all
+    select en.*, to_number(NULL) act_emp_src, 1 new_emp_src
+    from employees_new en
+   )
+group by employee_id, first_name, last_name
+having count(act_emp_src) != count(new_emp_src)
+;
+
